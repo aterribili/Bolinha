@@ -15,7 +15,7 @@ namespace CoreBolinha
             Repository.Clone(origemPath, destinoPath);
         }
 
-        public List<String> GetNomeTodosArquivosDoRepositorio(String origemPath)
+        public List<String> PegaNomeDosArquivos(String origemPath)
         {
             var lista = new List<String>();
             var nomes = Directory.GetFiles(origemPath);
