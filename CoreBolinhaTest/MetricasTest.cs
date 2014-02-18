@@ -14,14 +14,14 @@ namespace CoreBolinhaTest
         [TestMethod]
         public void DeveClonarRepositorio()
         {
-            var caminhoRepo = Repository.Init(PathAleatorio(), true);
-            var repositorio = PathAleatorio();
+            var destinoPath = PathAleatorio();
+            var origemPath = Repository.Init(PathAleatorio(), true);
             
-            Repository.Clone(caminhoRepo, repositorio);
+            new Ambiente().ClonaRepositorio(origemPath, destinoPath);
 
-            Assert.IsTrue(Directory.Exists(repositorio));
+            Assert.IsTrue(Directory.Exists(destinoPath));
 
-            using (var repo = new Repository(repositorio))
+            using (var repo = new Repository(destinoPath))
             {
                 Assert.IsFalse(repo.Info.IsBare);
             }
@@ -30,14 +30,14 @@ namespace CoreBolinhaTest
         [TestMethod]
         public void DeveCalcularQuantidadeLinhasDosArquivosEmRepositorio()
         {
-            var origem = PathAleatorio();
-            var repositorio = Repository.Init(origem, false);
+            var destinoPath = PathAleatorio();
+            var origemPath = Repository.Init(destinoPath, false);
 
-            using (var repo = new Repository(repositorio))
+            using (var repo = new Repository(origemPath))
             {
-                File.WriteAllText(origem + "\\arquivo.txt", "Lambda\r\nLambda\r\nLambda");
-                File.WriteAllText(origem + "\\arquivo-2.txt", "Teste\r\nTeste\r\nTeste");
-                File.WriteAllText(origem + "\\arquivo-3.txt", "Blz\r\nBlz\r\nBlz");
+                File.WriteAllText(destinoPath + "\\arquivo.txt", "Lambda\r\nLambda\r\nLambda");
+                File.WriteAllText(destinoPath + "\\arquivo-2.txt", "Teste\r\nTeste\r\nTeste");
+                File.WriteAllText(destinoPath + "\\arquivo-3.txt", "Blz\r\nBlz\r\nBlz");
 
                 repo.Index.Stage("arquivo.txt");
                 repo.Index.Stage("arquivo-2.txt");
@@ -46,20 +46,18 @@ namespace CoreBolinhaTest
                 repo.Commit("Initial Commit");
             }
 
-            Assert.IsTrue(File.Exists(origem + "\\arquivo.txt"));
-            Assert.IsTrue(File.Exists(origem + "\\arquivo-2.txt"));
-            Assert.IsTrue(File.Exists(origem + "\\arquivo-3.txt"));
+            Assert.IsTrue(File.Exists(destinoPath + "\\arquivo.txt"));
+            Assert.IsTrue(File.Exists(destinoPath + "\\arquivo-2.txt"));
+            Assert.IsTrue(File.Exists(destinoPath + "\\arquivo-3.txt"));
 
             var novoPath = PathAleatorio();
-            Repository.Clone(repositorio, novoPath);
-            
+
+            new Ambiente().ClonaRepositorio(origemPath, novoPath);
             var metricas = new Metricas(novoPath);
 
             Assert.AreEqual(3, metricas.CalculaQuantidadeLinhasDoArquivo("\\arquivo.txt"));
             Assert.AreEqual(3, metricas.CalculaQuantidadeLinhasDoArquivo("\\arquivo-2.txt"));
             Assert.AreEqual(3, metricas.CalculaQuantidadeLinhasDoArquivo("\\arquivo-3.txt"));
-
-
         }
     }
 }
