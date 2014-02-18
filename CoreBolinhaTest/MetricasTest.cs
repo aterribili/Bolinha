@@ -55,9 +55,17 @@ namespace CoreBolinhaTest
             new Ambiente().ClonaRepositorio(origemPath, novoPath);
             var metricas = new Metricas(novoPath);
 
-            Assert.AreEqual(3, metricas.CalculaQuantidadeLinhasDoArquivo("\\arquivo.txt"));
-            Assert.AreEqual(3, metricas.CalculaQuantidadeLinhasDoArquivo("\\arquivo-2.txt"));
-            Assert.AreEqual(3, metricas.CalculaQuantidadeLinhasDoArquivo("\\arquivo-3.txt"));
+            var listaArquivos = new List<String>();
+            var teste = new Ambiente().GetNomeTodosArquivosDoRepositorio(novoPath);
+            
+            listaArquivos.Add("\\arquivo.txt");
+            listaArquivos.Add("\\arquivo-2.txt");
+            listaArquivos.Add("\\arquivo-3.txt");
+
+
+            Assert.AreEqual(3, metricas.CalculaQuantidadeLinhasDoArquivo(teste)[0]);
+            Assert.AreEqual(3, metricas.CalculaQuantidadeLinhasDoArquivo(teste)[1]);
+            Assert.AreEqual(3, metricas.CalculaQuantidadeLinhasDoArquivo(teste)[2]);
         }
     }
 }
