@@ -10,20 +10,17 @@ namespace CoreBolinha
 {
     public class Ambiente
     {
-        public void ClonaRepositorio(String origemPath, String destinoPath)
+        private readonly String path;
+
+        public Ambiente(String path, String origemPath)
         {
-            Repository.Clone(origemPath, destinoPath);
+            this.path = path;
+            Repository.Clone(origemPath, path);
         }
 
-        public List<String> PegaNomeDosArquivos(String origemPath)
+        public List<String> PegaNomeDosArquivos()
         {
-            var lista = new List<String>();
-            var nomes = Directory.GetFiles(origemPath);
-
-            foreach (String nome in nomes)
-                lista.Add(nome);
-
-            return lista;
+            return Directory.GetFiles(path).ToList();
         }
     }
 }

@@ -10,21 +10,9 @@ namespace CoreBolinha
 {
     public class Metricas
     {
-        private readonly String caminhoRepositorio;
-
-        public Metricas(String pathOrigem)
-        {
-            caminhoRepositorio = pathOrigem;
-        }
-
         public List<int> CalculaQuantidadeLinhasDosArquivos(List<String> nomesArquivos)
         {
-            var lista = new List<int>();
-
-            foreach (String nome in nomesArquivos)
-                lista.Add(File.ReadAllLines(nome).Length);
-
-            return lista;
+            return nomesArquivos.Select((nome) => File.ReadAllLines(nome).Length).ToList();
         }
 
     }

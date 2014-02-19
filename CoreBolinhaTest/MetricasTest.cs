@@ -9,24 +9,8 @@ using System.Collections.Generic;
 namespace CoreBolinhaTest
 {
     [TestClass]
-    public class LibGitTest : Paths
+    public class MetricasTest : Paths
     {
-        [TestMethod]
-        public void DeveClonarRepositorio()
-        {
-            var destinoPath = PathAleatorio();
-            var origemPath = Repository.Init(PathAleatorio(), true);
-            
-            new Ambiente().ClonaRepositorio(origemPath, destinoPath);
-
-            Assert.IsTrue(Directory.Exists(destinoPath));
-
-            using (var repo = new Repository(destinoPath))
-            {
-                Assert.IsFalse(repo.Info.IsBare);
-            }
-        }
-
         [TestMethod]
         public void DeveCalcularQuantidadeLinhasDosArquivosEmRepositorio()
         {
@@ -51,16 +35,13 @@ namespace CoreBolinhaTest
             Assert.IsTrue(File.Exists(destinoPath + "\\arquivo-3.txt"));
 
             var novoPath = PathAleatorio();
+            var metricas = new Metricas();
 
-            new Ambiente().ClonaRepositorio(origemPath, novoPath);
-            var metricas = new Metricas(novoPath);
-
-            var listaArquivos = new Ambiente().PegaNomeDosArquivos(novoPath);
+            var listaArquivos = new Ambiente(novoPath, origemPath).PegaNomeDosArquivos();
 
             Assert.AreEqual(3, metricas.CalculaQuantidadeLinhasDosArquivos(listaArquivos)[0]);
             Assert.AreEqual(3, metricas.CalculaQuantidadeLinhasDosArquivos(listaArquivos)[1]);
             Assert.AreEqual(3, metricas.CalculaQuantidadeLinhasDosArquivos(listaArquivos)[2]);
         }
-
     }
 }
