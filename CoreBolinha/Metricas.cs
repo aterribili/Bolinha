@@ -17,12 +17,12 @@ namespace CoreBolinha
             caminhoRepositorio = pathOrigem;
         }
 
-        public List<int> CalculaQuantidadeLinhasDoArquivo(List<String> nomesArquivos)
+        public List<int> CalculaQuantidadeLinhasDosArquivos(List<String> nomesArquivos)
         {
             var lista = new List<int>();
 
             foreach (String nome in nomesArquivos)
-                lista.Add(File.ReadAllLines(caminhoRepositorio+nome).Length);
+                lista.Add(File.ReadAllLines(nome).Length);
 
             return lista;
         }
