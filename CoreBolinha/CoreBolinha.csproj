@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Arquivo.cs" />
     <Compile Include="Metricas.cs" />
     <Compile Include="Ambiente.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
