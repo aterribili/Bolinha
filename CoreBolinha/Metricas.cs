@@ -17,7 +17,6 @@ namespace CoreBolinha
 
         private List<String> PegaNomeArquivosAlteradosPorCommit(Commit commit)
         {
-            commit.Message.Select((e) => e);
             return commit.Tree.Select((a) => a.Name).ToList();
         }
 
