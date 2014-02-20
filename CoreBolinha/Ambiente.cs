@@ -18,18 +18,16 @@ namespace CoreBolinha
             Repository.Clone(origemPath, path);
         }
 
-        private List<String> PegaNomeDosArquivos()
+        public List<String> PegaNomeDosArquivos()
         {
-
-            return Directory.GetDirectories(path).SelectMany((dd) => Directory.GetFiles(dd)).Concat(Directory.GetFiles(path)).ToList();
+            return PegaDiretoriosInfinitamente(path);
         }
 
-        public List<String> PegaDiretoriosInfinitamente(String path)
+        private List<String> PegaDiretoriosInfinitamente(String path)
         {
-            if (path == this.path)
-                return PegaNomeDosArquivos();
-
-            return Directory.GetDirectories(path).ToList().SelectMany(()=> PegaNomeDosArquivos()).ToList();
+            return Directory.GetDirectories(path).
+                SelectMany((e) => PegaDiretoriosInfinitamente(e)).
+                Concat(Directory.GetFiles(path)).Where((nome) => !nome.Contains(".git")).ToList();
         }
     }
 }
