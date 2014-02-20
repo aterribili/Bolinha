@@ -10,20 +10,38 @@ namespace CoreBolinha
 {
     public class Metricas
     {
+        public readonly Repository Repo;
+
+        public Metricas(Repository repo)
+        {
+            this.Repo = repo;
+        }
+
         public List<int> CalculaQuantidadeLinhasDosArquivos(List<String> nomesArquivos)
         {
             return nomesArquivos.Select((nome) => File.ReadAllLines(nome).Length).ToList();
         }
 
-        private List<String> PegaNomeArquivosAlteradosPorCommit(Commit commit)
+        private List<String> PegaNomeArquivosAlteradosPorCommit()
         {
-            return commit.Tree.Select((a) => a.Name).ToList();
+            var listaDiff = Enumerable.Range(0, Repo.Commits.Count() - 1).
+                Select((posicaoA) => Repo.Diff.Compare<TreeChanges>(Repo.Commits.ElementAt(posicaoA + 1).Tree, Repo.Commits.ElementAt(posicaoA).Tree));
+
+            return listaDiff.
+                SelectMany((treeChanges) =>
+                    treeChanges.Added.
+                    Concat(treeChanges.Modified).
+                    Concat(treeChanges.Copied).
+                    Concat(treeChanges.Deleted).
+                    Concat(treeChanges.Renamed).
+                    Concat(treeChanges.TypeChanged).
+                    Select((e) => e.Path)).
+                    Concat(Repo.Commits.Last().Tree.Select((e) => e.Path)).ToList();
         }
 
-        public List<Arquivo> CalculaQuantidadeVezesQueArquivoFoiAlterado(IQueryableCommitLog commits)
+        public List<Arquivo> CalculaQuantidadeVezesQueArquivoFoiAlterado()
         {
-
-            var nomes = commits.SelectMany((commit) => PegaNomeArquivosAlteradosPorCommit(commit));
+            var nomes = PegaNomeArquivosAlteradosPorCommit();
 
             return nomes.
                 OrderBy((elemento) => elemento).

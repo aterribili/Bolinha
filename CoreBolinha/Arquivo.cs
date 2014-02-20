@@ -8,19 +8,13 @@ namespace CoreBolinha
 {
     public class Arquivo
     {
-        private readonly String nome;
-        private readonly int alterado;
+        public readonly String Nome;
+        public readonly int Alterado;
 
         public Arquivo(String nome, int vezesAlterado)
         {
-            this.nome = nome;
-            this.alterado = vezesAlterado;
+            this.Nome = nome;
+            this.Alterado = vezesAlterado;
         }
-
-        public override string ToString()
-        {
-            return "Arquivo "+nome+" alterado "+alterado.ToString()+" vezes";
-        }
-
     }
 }

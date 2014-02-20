@@ -18,9 +18,18 @@ namespace CoreBolinha
             Repository.Clone(origemPath, path);
         }
 
-        public List<String> PegaNomeDosArquivos()
+        private List<String> PegaNomeDosArquivos()
         {
-            return Directory.GetFiles(path).ToList();
+
+            return Directory.GetDirectories(path).SelectMany((dd) => Directory.GetFiles(dd)).Concat(Directory.GetFiles(path)).ToList();
+        }
+
+        public List<String> PegaDiretoriosInfinitamente(String path)
+        {
+            if (path == this.path)
+                return PegaNomeDosArquivos();
+
+            return Directory.GetDirectories(path).ToList().SelectMany(()=> PegaNomeDosArquivos()).ToList();
         }
     }
 }
