@@ -27,6 +27,8 @@ namespace CoreBolinha
             var listaDiff = Enumerable.Range(0, Repo.Commits.Count() - 1).
                 Select((posicaoA) => Repo.Diff.Compare<TreeChanges>(Repo.Commits.ElementAt(posicaoA + 1).Tree, Repo.Commits.ElementAt(posicaoA).Tree));
 
+            var elementosAtuais = PegaTodosElementosAtuais();
+
             return listaDiff.
                 SelectMany((treeChanges) =>
                     treeChanges.Added.
@@ -36,22 +38,30 @@ namespace CoreBolinha
                     Concat(treeChanges.Renamed).
                     Concat(treeChanges.TypeChanged).
                     Select((e) => e.Path)).
-                    Concat(Repo.Commits.Last().Tree.Select((e) => e.Path)).ToList();
+                    Concat(Repo.Commits.Last().Tree.Select((e) => e.Path)).
+                    Where((elemento)=> elementosAtuais.Contains(elemento)).ToList();
         }
 
-        public List<Arquivo> CalculaQuantidadeVezesQueArquivoFoiAlterado()
+        public List<String> PegaTodosElementosAtuais()
+        {
+            return Repo.Head.Tip.Tree.Select((e)=> e.Path).ToList();
+        }
+
+
+        private int ContaOcorrenciasNomeArquivo(IEnumerable<string> nomes, string nome)
+        {
+            return nomes.Where((arquivo) => nome == arquivo).Count();
+        }
+
+        public List<Arquivo> GeraMetricas()
         {
             var nomes = PegaNomeArquivosAlteradosPorCommit();
 
             return nomes.
                 OrderBy((elemento) => elemento).
                 Distinct().
-                Select((nome) => new Arquivo(nome, ContaOcorrenciasNomeArquivo(nomes, nome))).ToList();
-        }
-
-        private int ContaOcorrenciasNomeArquivo(IEnumerable<string> nomes, string nome)
-        {
-            return nomes.Where((arquivo) => nome == arquivo).Count();
+                Select((nome) =>
+                    new Arquivo(nome, ContaOcorrenciasNomeArquivo(nomes, nome), File.ReadAllLines(Repo.Info.Path+"..\\"+nome).Length)).ToList();
         }
     }
 }

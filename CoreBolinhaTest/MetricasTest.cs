@@ -30,7 +30,6 @@ namespace CoreBolinhaTest
 
                 repo.Commit("Initial Commit");
 
-
                 Assert.IsTrue(File.Exists(destinoPath + "\\arquivo.txt"));
                 Assert.IsTrue(File.Exists(destinoPath + "\\arquivo-2.txt"));
                 Assert.IsTrue(File.Exists(destinoPath + "\\arquivo-3.txt"));
@@ -38,11 +37,11 @@ namespace CoreBolinhaTest
                 var novoPath = PathAleatorio();
                 var metricas = new Metricas(repo);
 
-                var listaArquivos = new Ambiente(novoPath, origemPath).PegaNomeDosArquivos();
+                var listaNomesDeArquivos = new Ambiente(novoPath, origemPath).PegaNomeDosArquivos();
 
-                Assert.AreEqual(3, metricas.CalculaQuantidadeLinhasDosArquivos(listaArquivos)[0]);
-                Assert.AreEqual(3, metricas.CalculaQuantidadeLinhasDosArquivos(listaArquivos)[1]);
-                Assert.AreEqual(3, metricas.CalculaQuantidadeLinhasDosArquivos(listaArquivos)[2]);
+                Assert.AreEqual(3, metricas.CalculaQuantidadeLinhasDosArquivos(listaNomesDeArquivos)[0]);
+                Assert.AreEqual(3, metricas.CalculaQuantidadeLinhasDosArquivos(listaNomesDeArquivos)[1]);
+                Assert.AreEqual(3, metricas.CalculaQuantidadeLinhasDosArquivos(listaNomesDeArquivos)[2]);
             }
         }
 
@@ -75,17 +74,18 @@ namespace CoreBolinhaTest
                 repo.Commit("Adicionando arquivo-3 e arquivo-4");
 
                 Assert.AreEqual(4, repo.Commits.Count());
-                Assert.AreEqual("arquivo.txt", new Metricas(repo).CalculaQuantidadeVezesQueArquivoFoiAlterado().ElementAt(0).Nome);
-                Assert.AreEqual(1, new Metricas(repo).CalculaQuantidadeVezesQueArquivoFoiAlterado().ElementAt(0).Alterado);
+
+                Assert.AreEqual("arquivo.txt", new Metricas(repo).GeraMetricas().ElementAt(0).Nome);
+                Assert.AreEqual(1, new Metricas(repo).GeraMetricas().ElementAt(0).Alterado);
                 
-                Assert.AreEqual("arquivo-2.txt", new Metricas(repo).CalculaQuantidadeVezesQueArquivoFoiAlterado().ElementAt(1).Nome);
-                Assert.AreEqual(2, new Metricas(repo).CalculaQuantidadeVezesQueArquivoFoiAlterado().ElementAt(1).Alterado);
+                Assert.AreEqual("arquivo-2.txt", new Metricas(repo).GeraMetricas().ElementAt(1).Nome);
+                Assert.AreEqual(2, new Metricas(repo).GeraMetricas().ElementAt(1).Alterado);
 
-                Assert.AreEqual("arquivo-3.txt", new Metricas(repo).CalculaQuantidadeVezesQueArquivoFoiAlterado().ElementAt(2).Nome);
-                Assert.AreEqual(1, new Metricas(repo).CalculaQuantidadeVezesQueArquivoFoiAlterado().ElementAt(2).Alterado);
+                Assert.AreEqual("arquivo-3.txt", new Metricas(repo).GeraMetricas().ElementAt(2).Nome);
+                Assert.AreEqual(1, new Metricas(repo).GeraMetricas().ElementAt(2).Alterado);
 
-                Assert.AreEqual("arquivo-4.txt", new Metricas(repo).CalculaQuantidadeVezesQueArquivoFoiAlterado().ElementAt(3).Nome);
-                Assert.AreEqual(1, new Metricas(repo).CalculaQuantidadeVezesQueArquivoFoiAlterado().ElementAt(3).Alterado);
+                Assert.AreEqual("arquivo-4.txt", new Metricas(repo).GeraMetricas().ElementAt(3).Nome);
+                Assert.AreEqual(1, new Metricas(repo).GeraMetricas().ElementAt(3).Alterado);
             }
 
         }

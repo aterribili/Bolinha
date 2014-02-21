@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CoreBolinhaTest
+namespace CoreBolinha
 {
     public abstract class Paths
     {

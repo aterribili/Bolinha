@@ -10,11 +10,16 @@ namespace CoreBolinha
     {
         public readonly String Nome;
         public readonly int Alterado;
+        public readonly int Linhas;
+        public readonly Double Bolinha;
 
-        public Arquivo(String nome, int vezesAlterado)
+        public Arquivo(String nome, int vezesAlterado, int linhas)
         {
             this.Nome = nome;
             this.Alterado = vezesAlterado;
+            this.Linhas = linhas;
+            this.Bolinha = Double.Parse(linhas.ToString())  / vezesAlterado;
         }
+
     }
 }
