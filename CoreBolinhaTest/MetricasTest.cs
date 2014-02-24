@@ -35,13 +35,14 @@ namespace CoreBolinhaTest
                 Assert.IsTrue(File.Exists(destinoPath + "\\arquivo-3.txt"));
 
                 var novoPath = PathAleatorio();
-                var metricas = new Metricas(repo);
+                var metricas = new Metricas(repo).GeraMetricas();
 
                 var listaNomesDeArquivos = new Ambiente(novoPath, origemPath).PegaNomeDosArquivos();
 
-                Assert.AreEqual(3, metricas.CalculaQuantidadeLinhasDosArquivos(listaNomesDeArquivos)[0]);
-                Assert.AreEqual(3, metricas.CalculaQuantidadeLinhasDosArquivos(listaNomesDeArquivos)[1]);
-                Assert.AreEqual(3, metricas.CalculaQuantidadeLinhasDosArquivos(listaNomesDeArquivos)[2]);
+
+                Assert.AreEqual(3, metricas[0].Linhas);
+                Assert.AreEqual(3, metricas[1].Linhas);
+                Assert.AreEqual(3, metricas[2].Linhas);
             }
         }
 

@@ -17,11 +17,6 @@ namespace CoreBolinha
             this.Repo = repo;
         }
 
-        public List<int> CalculaQuantidadeLinhasDosArquivos(List<String> nomesArquivos)
-        {
-            return nomesArquivos.Select((nome) => File.ReadAllLines(nome).Length).ToList();
-        }
-
         private List<String> PegaNomeArquivosAlteradosPorCommit()
         {
             var listaDiff = Enumerable.Range(0, Repo.Commits.Count() - 1).
@@ -39,12 +34,21 @@ namespace CoreBolinha
                     Concat(treeChanges.TypeChanged).
                     Select((e) => e.Path)).
                     Concat(Repo.Commits.Last().Tree.Select((e) => e.Path)).
-                    Where((elemento)=> elementosAtuais.Contains(elemento)).ToList();
+                    Where((elemento) => elementosAtuais.Contains(elemento)).ToList();
         }
 
         public List<String> PegaTodosElementosAtuais()
         {
-            return Repo.Head.Tip.Tree.Select((e)=> e.Path).ToList();
+            return PegaDiretoriosInfinitamente(Repo.Info.Path + "..\\").
+                Select((e) => e.Replace(Repo.Info.Path + "..\\", "")).ToList();
+        }
+
+        private List<String> PegaDiretoriosInfinitamente(String path)
+        {
+            return Directory.GetDirectories(path).
+                SelectMany((e) => PegaDiretoriosInfinitamente(e)).
+                Concat(Directory.GetFiles(path)).
+                Where((nome) => !Path.GetFullPath(nome).Contains(".git")).ToList();
         }
 
         private int ContaOcorrenciasNomeArquivo(IEnumerable<string> nomes, string nome)
@@ -60,7 +64,7 @@ namespace CoreBolinha
                 OrderBy((elemento) => elemento).
                 Distinct().
                 Select((nome) =>
-                    new Arquivo(nome, ContaOcorrenciasNomeArquivo(nomes, nome), File.ReadAllLines(Repo.Info.Path+"..\\"+nome).Length)).ToList();
+                    new Arquivo(nome, ContaOcorrenciasNomeArquivo(nomes, nome), File.ReadAllLines(Repo.Info.Path + "..\\" + nome).Length)).ToList();
         }
     }
 }

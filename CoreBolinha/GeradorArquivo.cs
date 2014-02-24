@@ -26,7 +26,6 @@ namespace CoreBolinha
                 var metricas = new Metricas(repo);
                 var commits = metricas.GeraMetricas();
                 var nomesArquivos = ambiente.PegaNomeDosArquivos();
-                var linhas = metricas.CalculaQuantidadeLinhasDosArquivos(nomesArquivos);
 
                 var maiorNome = commits.Max((elemento) => elemento.Nome.Length) + 1;
 
@@ -37,10 +36,8 @@ namespace CoreBolinha
                 
                 writer.WriteLine(header);
 
-                var zipado = commits.Zip(linhas, (arquivo, numeroLinhas) => new Tuple<Arquivo, int>(arquivo, numeroLinhas));
-
-                zipado.ToList().ForEach((tupla) => writer.
-                    WriteLine("{0,-" + maiorNome + "} {1,6:N0} {2,7:N0} {3,7:N0}", tupla.Item1.Nome, tupla.Item2, tupla.Item1.Alterado, tupla.Item1.Bolinha));
+                commits.ForEach((arquivo) => writer.
+                    WriteLine("{0,-" + maiorNome + "} {1,6:N0} {2,7:N0} {3,7:N0}", arquivo.Nome, arquivo.Linhas, arquivo.Alterado, arquivo.Bolinha));
 
                 writer.Close();
             }
