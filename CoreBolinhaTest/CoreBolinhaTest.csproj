@@ -57,6 +57,7 @@
     <Compile Include="AmbienteTest.cs" />
     <Compile Include="MetricasTest.cs" />
     <Compile Include="Paths.cs" />
+    <Compile Include="Setup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GeradorArquivoTest.cs" />
   </ItemGroup>

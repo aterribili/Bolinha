@@ -47,7 +47,6 @@ namespace CoreBolinha
             return Repo.Head.Tip.Tree.Select((e)=> e.Path).ToList();
         }
 
-
         private int ContaOcorrenciasNomeArquivo(IEnumerable<string> nomes, string nome)
         {
             return nomes.Where((arquivo) => nome == arquivo).Count();
