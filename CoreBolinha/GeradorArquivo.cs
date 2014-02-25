@@ -27,17 +27,20 @@ namespace CoreBolinha
                 var commits = metricas.GeraMetricas();
                 var nomesArquivos = ambiente.PegaNomeDosArquivos();
 
-                var maiorNome = commits.Max((elemento) => elemento.Nome.Length) + 1;
+                StreamWriter writer = new StreamWriter("C:\\temp\\relatorio.html");
 
-                StreamWriter writer = new StreamWriter("C:\\temp\\relatorio.txt");
-
-                string header = String.Format("{0,-" + maiorNome + "} {1,-6} {2,-7} {3,-7}",
-                                          "Nome", "Linhas", "Commits", "Bolinha");
-                
+                string header = String.Format("<!DOCTYPE html><html><head><meta charset='utf-8'><title>Relatorio Git</title></head><body>");
                 writer.WriteLine(header);
 
+                string tabela = String.Format("<table><tbody><tr><td>Nome</td><td>Linhas</td><td>Alterado</td><td>Bolinha</td></tr>");
+                writer.WriteLine(tabela);
+
                 commits.ForEach((arquivo) => writer.
-                    WriteLine("{0,-" + maiorNome + "} {1,6:N0} {2,7:N0} {3,7:N0}", arquivo.Nome, arquivo.Linhas, arquivo.Alterado, arquivo.Bolinha));
+                    WriteLine("<tr><td>" + arquivo.Nome + "</td><td>" + arquivo.Linhas + "</td><td>" +
+                    arquivo.Alterado + "</td><td>" + arquivo.Bolinha + "</td></tr>"));
+
+                string footer = String.Format("</tbody></table></body></html>");
+                writer.WriteLine(footer);
 
                 writer.Close();
             }

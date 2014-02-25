@@ -22,7 +22,7 @@ namespace CoreBolinhaTest
         [TestMethod]
         public void DeveGerarArquivoFormatadoNovo()
         {
-            new GeradorArquivo("https://github.com/vidageek/games.git", "C:\\temp\\meu").Arquivo();
+            new GeradorArquivo("https://github.com/vidageek/games.git", PathAleatorio()).Arquivo();
         }
     }
 }
