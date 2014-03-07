@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using LibGit2Sharp;
 using System.IO;
+using CoreBolinha;
 
 namespace CoreBolinha
 {
@@ -23,27 +24,52 @@ namespace CoreBolinha
         {
             using (var repo = new Repository(ambiente.Path))
             {
-                var metricas = new Metricas(repo);
-                var commits = metricas.GeraMetricas();
+                var commits = new Metricas(repo).GeraMetricas();
                 var nomesArquivos = ambiente.PegaNomeDosArquivos();
 
-                StreamWriter writer = new StreamWriter("C:\\temp\\relatorio.html");
+                GeraRelatorioPorArquivo(commits);
 
-                string header = String.Format("<!DOCTYPE html><html><head><meta charset='utf-8'><title>Relatorio Git</title></head><body>");
-                writer.WriteLine(header);
-
-                string tabela = String.Format("<table><tbody><tr><td>Nome</td><td>Linhas</td><td>Alterado</td><td>Bolinha</td></tr>");
-                writer.WriteLine(tabela);
-
-                commits.ForEach((arquivo) => writer.
-                    WriteLine("<tr><td>" + arquivo.Nome + "</td><td>" + arquivo.Linhas + "</td><td>" +
-                    arquivo.Alterado + "</td><td>" + arquivo.Bolinha + "</td></tr>"));
-
-                string footer = String.Format("</tbody></table></body></html>");
-                writer.WriteLine(footer);
-
-                writer.Close();
+                GeraRelatorioGeral(commits);
             }
+        }
+
+        private void GeraRelatorioPorArquivo(List<Arquivo> commits)
+        {
+            var contador = 0;
+
+            commits.ForEach((arquivo) =>
+            {
+                var relatorioArquivo = new StreamWriter("C:\\temp\\arquivos-relatorio\\arquivo-" + contador + ".html");
+
+                relatorioArquivo.Write("<!DOCTYPE html><html><head><meta charset='utf-8'><title>arquivo-" +
+                    contador++ + ".html</title></head><body><h1>Nome: " + arquivo.Nome + "</h1>" + "<ul><li>Linhas: " +
+                    arquivo.Linhas + "</li><li>Alterado: " + arquivo.Alterado + "</li><li>Bolinha :" + arquivo.Bolinha + "</li></ul></body></html>");
+
+                relatorioArquivo.Close();
+            });
+        }
+
+        private void GeraRelatorioGeral(List<Arquivo> commits)
+        {
+            var relatorioGeral = new StreamWriter("C:\\temp\\relatorio.html");
+
+            string header = "<!DOCTYPE html><html><head><meta charset='utf-8'><title>Relatorio Git</title></head><body>";
+            relatorioGeral.WriteLine(header);
+
+            string estruturaTable = "<table><thead><tr><td>Nome</td><td>Linhas</td><td>Alterado</td><td>Bolinha</td></tr></thead><tbody>";
+            relatorioGeral.WriteLine(estruturaTable);
+
+            var contador2 = 0;
+            commits.ForEach((arquivo) => relatorioGeral.
+                WriteLine("<tr><td><a href='arquivos-relatorio\\arquivo-" + contador2++ + ".html'>" +
+                arquivo.Nome + "</a></td><td>" + arquivo.Linhas + "</td><td>" +
+                arquivo.Alterado + "</td><td>" + arquivo.Bolinha + "</td></tr>"));
+
+            string footer = "</tbody></table></body></html>";
+
+            relatorioGeral.WriteLine(footer);
+
+            relatorioGeral.Close();
         }
     }
 }

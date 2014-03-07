@@ -1,0 +1,34 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<header><h2>Relatorio de Metricas</h2></header>
+
+<section>
+    <p>
+        O Bolinha é uma iniciativa <a href="https://github.com/aterribili/Bolinha">Open-Source</a> que tem o objetivo de te auxiliar com algumas métricas geradas para seu repositório git.
+        Utilizamos API<a href="https://github.com/libgit2/libgit2sharp"> LibGitSharp</a>.
+    </p>
+</section>
+
+<section class="formulario">
+    
+    <form action="/">
+        <p>
+            Url Repositório <input name="url" type="text">
+            <button name="baixar">Gerar</button>
+        </p>
+    </form>
+</section>
+
+<section class="relatorio">
+    <table>
+        <tr>
+            <td>Nome</td>
+            <td>Alterado</td>
+            <td>Commits</td>
+            <td>Bolinha</td>
+        </tr>
+    </table>
+</section>
