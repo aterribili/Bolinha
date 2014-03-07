@@ -20,6 +20,24 @@ namespace CoreBolinha
             ambiente = new Ambiente(path, url);
         }
 
+        public List<Arquivo> Arquivos()
+        {
+            using (var repo = new Repository(ambiente.Path))
+            {
+                var commits = new Metricas(repo).GeraMetricas();
+                return commits;
+            }
+        }
+
+        public List<String> NomesArquivos()
+        {
+            using (var repo = new Repository(ambiente.Path))
+            {
+                var nomesArquivos = ambiente.PegaNomeDosArquivos();
+                return nomesArquivos;
+            }
+        }
+
         public void Arquivo()
         {
             using (var repo = new Repository(ambiente.Path))

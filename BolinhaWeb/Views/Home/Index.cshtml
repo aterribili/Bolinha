@@ -24,11 +24,28 @@
 
 <section class="relatorio">
     <table>
-        <tr>
-            <td>Nome</td>
-            <td>Alterado</td>
-            <td>Commits</td>
-            <td>Bolinha</td>
-        </tr>
-    </table>
+        <thead>
+            <tr>
+                <td>Nome</td>
+                <td>Commits</td>
+                <td>Alterado</td>
+                <td>Bolinha</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var arquivo in ViewBag.Arquivos)
+                {
+                    <tr>
+                        <td>@arquivo.Nome</td>
+                        <td>@arquivo.Linhas</td>
+                        <td>@arquivo.Alterado</td>
+                        <td>@arquivo.Bolinha</td>
+                    </tr>
+                }
+        </tbody>
+</table>
 </section>
+
+
+
+

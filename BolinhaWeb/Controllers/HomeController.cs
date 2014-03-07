@@ -12,9 +12,11 @@ namespace BolinhaWeb.Controllers
         public ActionResult Index(String url)
         {
             ViewBag.Url = url;
+            ViewBag.Arquivos = new List<Arquivo>();
 
-            
-            
+            if(url != null)
+                ViewBag.Arquivos = new GeradorArquivo(url, new Paths().PathAleatorio()).Arquivos();
+
             return View();
         }
     }
