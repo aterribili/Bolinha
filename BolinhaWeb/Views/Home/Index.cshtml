@@ -8,7 +8,7 @@
 <section>
     <p>
         O Bolinha é uma iniciativa <a href="https://github.com/aterribili/Bolinha">Open-Source</a> que tem o objetivo de te auxiliar com algumas métricas geradas para seu repositório git.
-        Utilizamos API<a href="https://github.com/libgit2/libgit2sharp"> LibGitSharp</a>.
+        Utilizamos API <a href="https://github.com/libgit2/libgit2sharp">LibGitSharp</a>.
     </p>
 </section>
 
@@ -36,7 +36,7 @@
             @foreach (var arquivo in ViewBag.Arquivos)
                 {
                     <tr>
-                        <td>@arquivo.Nome</td>
+                        <td><a href="~/Home/Detail?nome=@arquivo.Nome&linhas=@arquivo.Linhas&alterado=@arquivo.Alterado&bolinha=@arquivo.Bolinha">@arquivo.Nome</a></td>
                         <td>@arquivo.Linhas</td>
                         <td>@arquivo.Alterado</td>
                         <td>@arquivo.Bolinha</td>

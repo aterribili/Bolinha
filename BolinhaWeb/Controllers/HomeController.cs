@@ -19,5 +19,15 @@ namespace BolinhaWeb.Controllers
 
             return View();
         }
+
+        public ActionResult Detail(String nome, String linhas, String alterado, String bolinha)
+        {
+            ViewBag.Nome = nome;
+            ViewBag.Linhas = linhas;
+            ViewBag.Alterado = alterado;
+            ViewBag.Bolinha = bolinha;
+
+            return View();
+        }
     }
 }
